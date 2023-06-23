@@ -39,5 +39,6 @@ const verifyUserAuth = async (req, res, next) => {
 
 module.exports = {
   db,
+  auth,
   verifyUserAuth
 }
