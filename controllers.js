@@ -4,7 +4,8 @@ const { getUserByEmail, getDoctorTemplate, getPatientTemplate } = require('./uti
 
 module.exports = {
   async createUser (req, res, next) {
-    const { email, password, nombre, apellido, role, active } = req.body
+    console.log({ body: req.body })
+    const { email, password, nombre, apellido, role, active, documento, image } = req.body
 
     const collection = role === 'admin'
       ? 'admins'
@@ -29,16 +30,13 @@ module.exports = {
         })
         await auth.setCustomUserClaims(user.uid, { role })
 
-        // Si el documento en firestore existe, no se crea y se devuelve el que ya existe
-        if (existsFirestore) return res.status(200).json(existsFirestore)
-
         const template = role === 'admin'
-          ? { role, email, nombre, apellido, photo: '' }
+          ? { role, email, nombre, apellido, image: '' }
           : role === 'doctor'
-            ? getDoctorTemplate({ email, role, nombre, apellido })
-            : getPatientTemplate({ email, role, nombre, apellido, active })
+            ? getDoctorTemplate({ email, role, nombre, apellido, image })
+            : getPatientTemplate({ email, role, nombre, apellido, image, active, documento })
 
-        const docRef = db.collection(collection).doc()
+        const docRef = db.collection(collection).doc(user.uid)
         await docRef.set(template)
         const userFromFirestore = await docRef.get()
           .then((doc) => {

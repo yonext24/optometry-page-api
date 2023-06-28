@@ -1,20 +1,22 @@
 const { db } = require('./firebase')
 
-const getPatientTemplate = ({ email, nombre, apellido, photo, role, active, deberes, historia_clinica }) => {
+const getPatientTemplate = ({ email, nombre, apellido, image, role, active, deberes, historia_clinica, medico_asignado, documento }) => {
   return {
     email,
     nombre,
     apellido,
-    photo: photo || '',
+    image: image || '',
     role,
+    documento: documento || '',
     active: active || true,
     deberes: deberes || {},
+    medico_asignado: medico_asignado || null,
     historia_clinica: historia_clinica || {}
   }
 }
-const getDoctorTemplate = ({ email, role, nombre, apellido, photo, pacientes_asignados }) => {
+const getDoctorTemplate = ({ email, role, nombre, apellido, image, pacientes_asignados }) => {
   return {
-    email, photo: photo || '', role, nombre, apellido, pacientes_asignados: pacientes_asignados || {}
+    email, image: image || '', role, nombre, apellido, pacientes_asignados: pacientes_asignados || []
   }
 }
 

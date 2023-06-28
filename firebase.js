@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 const admin = require('firebase-admin')
 const credentials = require('./credentials.json')
 const { initializeApp } = require('firebase-admin/app')
@@ -16,7 +17,7 @@ const verifyUserAuth = async (req, res, next) => {
 
   if (!token) {
     // El token no está presente en la solicitud
-    return res.status(401).json({ message: 'No se proporcionó un token de autenticación.' })
+    return res.status(401).json({ error: 'No estás autorizado para hacer esto.' })
   }
 
   try {
